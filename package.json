@@ -1,0 +1,37 @@
+{
+  "name": "mountebank-formatters",
+  "version": "0.0.1",
+  "author": "Brandon Byars <brandon.byars@gmail.com>",
+  "description": "The default parsers and formatters for managing mountebank test data",
+  "homepage": "http://www.mbtest.org",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bbyars/mountebank-formatters.git"
+  },
+  "bugs": {
+    "url": "https://github.com/bbyars/mountebank-formatters/issues",
+    "email": "brandon.byars@gmail.com"
+  },
+  "main": "./src/index.js",
+  "scripts": {
+    "lint": "node node_modules/.bin/eslint **/*.js",
+    "test": "node node_modules/.bin/_mocha test/**/*.js"
+  },
+  "keywords": [
+    "test data",
+    "mountebank"
+  ],
+  "dependencies": {
+    "ejs": "2.7.4",
+    "fs-extra": "9.0.1"
+  },
+  "devDependencies": {
+    "eslint": "7.16.0",
+    "mocha": "8.2.1",
+    "snyk": "1.437.3"
+  },
+  "engines": {
+    "node": ">=10"
+  }
+}

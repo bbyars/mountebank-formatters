@@ -1,0 +1,8 @@
+(request, state, logger) => {
+  return {
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: '<%- stringify('services/body.ejs') %>'
+  };
+}
