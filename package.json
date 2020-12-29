@@ -15,8 +15,7 @@
   },
   "main": "./src/index.js",
   "scripts": {
-    "lint": "node node_modules/.bin/eslint **/*.js",
-    "test": "node node_modules/.bin/_mocha test/**/*.js"
+    "test": "node node_modules/.bin/eslint **/*.js && node node_modules/.bin/_mocha test/**/*.js"
   },
   "keywords": [
     "test data",
