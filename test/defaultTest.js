@@ -2,16 +2,9 @@
 
 const assert = require('assert'),
     fs = require('fs-extra'),
-    formatter = require('../src/default'),
-    filename = 'defaultTest.json';
+    formatter = require('../src/default');
 
 describe('default', function () {
-    afterEach(function () {
-        if (fs.existsSync(filename)) {
-            fs.unlinkSync(filename);
-        }
-    });
-
     describe('#load', function () {
         it('should load file as is if no EJS directives', function () {
             const config = {
@@ -21,9 +14,10 @@ describe('default', function () {
                     name: 'name'
                 }]
             };
-            fs.writeFileSync(filename, JSON.stringify(config));
+            fs.writeFileSync('defaultTest.json', JSON.stringify(config));
 
-            assert.deepStrictEqual(formatter.load({ configfile: filename }), config);
+            assert.deepStrictEqual(formatter.load({ configfile: 'defaultTest.json' }), config);
+            fs.unlinkSync('defaultTest.json');
         });
 
         it('should add imposters array if it is missing', function () {
@@ -32,9 +26,10 @@ describe('default', function () {
                 protocol: 'test',
                 name: 'name'
             };
-            fs.writeFileSync(filename, JSON.stringify(config));
+            fs.writeFileSync('defaultTest.json', JSON.stringify(config));
 
-            assert.deepStrictEqual(formatter.load({ configfile: filename }), { imposters: [config] });
+            assert.deepStrictEqual(formatter.load({ configfile: 'defaultTest.json' }), { imposters: [config] });
+            fs.unlinkSync('defaultTest.json');
         });
 
         it('should interpret EJS code blocks', function () {
@@ -58,7 +53,7 @@ describe('default', function () {
         });
 
         it('should interpret nested EJS include blocks', function () {
-            assert.deepStrictEqual(formatter.load({ configfile: 'test/templates/nested.ejs' }), {
+            assert.deepStrictEqual(formatter.load({ configfile: 'test/templates/nested/nested.ejs' }), {
                 imposters: [{
                     port: 3000,
                     protocol: 'http',
@@ -74,7 +69,7 @@ describe('default', function () {
         });
 
         it('should add stringify', function () {
-            assert.deepStrictEqual(formatter.load({ configfile: 'test/templates/stringify.ejs' }), {
+            assert.deepStrictEqual(formatter.load({ configfile: 'test/templates/stringify/stringify.ejs' }), {
                 imposters: [{
                     protocol: 'test',
                     port: 3000,
@@ -112,9 +107,10 @@ describe('default', function () {
                 }]
             };
 
-            formatter.save({ savefile: filename }, config);
+            formatter.save({ savefile: 'defaultTest.json' }, config);
 
-            assert.deepStrictEqual(formatter.load({ configfile: filename }), config);
+            assert.deepStrictEqual(formatter.load({ configfile: 'defaultTest.json' }), config);
+            fs.unlinkSync('defaultTest.json');
         });
     });
 });
