@@ -7,46 +7,42 @@
  mountebank accepted them), and in part, to show the pattern for extensibility.
  */
 
-// usage: stringify(includeFile)
-// note: Trying to make this backwards compatible. However, the intent is to change
-// the signature to just require `includeFile`.
-function stringify (filename, includeFile, data) {
-    const fs = require('fs-extra'),
-        ejs = require('ejs'),
-        resolvedPath = makePathInABackwardsCompatibleWay(filename, includeFile),
-        contents = fs.readFileSync(resolvedPath, 'utf8'),
-        rendered = ejs.render(contents, {
-            data: data,
-            filename: CONFIG_FILE_PATH,
-            stringify: stringify,
-            inject: stringify // backwards compatibility
-        }),
-        jsonString = JSON.stringify(rendered.trim());
+function makeStringify (rootFile) {
+    // The filename parameter is deprecated (mountebank used to force users to pass
+    // the literal variable name, an awful hack whose intent is long forgotten)
+    // This maintains that signature for backwards compatibility
+    function stringify (filename, includeFile, data) {
+        if (!includeFile) {
+            includeFile = filename;
+        }
+        const fs = require('fs-extra'),
+            path = require('path'),
+            ejs = require('ejs'),
+            resolvedPath = path.join(path.dirname(rootFile), includeFile),
+            contents = fs.readFileSync(resolvedPath, 'utf8'),
+            rendered = ejs.render(contents, {
+                data: data,
+                filename: rootFile,
+                stringify: stringify,
+                inject: stringify // backwards compatibility
+            }),
+            jsonString = JSON.stringify(rendered.trim());
 
-    // get rid of the surrounding quotes because it makes the templates more natural to quote them there
-    return jsonString.substring(1, jsonString.length - 1);
-}
-
-function makePathInABackwardsCompatibleWay (filename, includeFile) {
-    var resolvedPath = null;
-    if (!includeFile) {
-        includeFile = filename;
+        // get rid of the surrounding quotes because it makes the templates more natural to quote them there
+        return jsonString.substring(1, jsonString.length - 1);
     }
-    const path = require('path');
-    resolvedPath = path.join(path.dirname(CONFIG_FILE_PATH), includeFile);
-    return resolvedPath;
+
+    return stringify;
 }
 
-var CONFIG_FILE_PATH = null;
 function load (options) {
-    CONFIG_FILE_PATH = options.configfile;
     const fs = require('fs-extra'),
         ejs = require('ejs'),
         configContents = fs.readFileSync(options.configfile, 'utf8'),
         renderedContents = options.noParse ? configContents : ejs.render(configContents, {
             filename: options.configfile,
-            stringify: stringify,
-            inject: stringify // backwards compatibility
+            stringify: makeStringify(options.configfile),
+            inject: makeStringify(options.configfile) // backwards compatibility, was originally called inject
         });
 
     try {
