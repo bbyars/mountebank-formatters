@@ -10,9 +10,8 @@ Those two functions should work in concert, so you can round-trip the configurat
 following should always work for the same formatter:
 
 ````
-mb save --savefile mb.json --formatter default
-mb stop
-mb start --configfile mb.json --formatter default
+mb save --savefile mb.json --formatter path/to/customFormatter
+mb restart --configfile mb.json --formatter path/to/customFormatter
 ````
 
 For years, mountebank supported EJS templating, which could be turned off using the `--noParse` CLI flag.
