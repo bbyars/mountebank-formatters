@@ -7,11 +7,11 @@
  mountebank accepted them), and in part, to show the pattern for extensibility.
  */
 
-function makeStringify (rootFile) {
+function makeStringify(rootFile) {
     // The filename parameter is deprecated (mountebank used to force users to pass
     // the literal variable name, an awful hack whose intent is long forgotten)
     // This maintains that signature for backwards compatibility
-    function stringify (filename, includeFile, data) {
+    function stringify(filename, includeFile, data) {
         if (!includeFile) {
             includeFile = filename;
         }
@@ -35,7 +35,7 @@ function makeStringify (rootFile) {
     return stringify;
 }
 
-function load (options) {
+function load(options) {
     const fs = require('fs-extra'),
         ejs = require('ejs'),
         configContents = fs.readFileSync(options.configfile, 'utf8'),
@@ -49,21 +49,23 @@ function load (options) {
         const json = JSON.parse(renderedContents),
             imposters = json.imposters || [json]; // [json] Assume they left off the outer imposters array
 
-        return { imposters };
-    }
-    catch (e) {
+        return {imposters};
+    } catch (e) {
         console.error('Unable to parse configfile as JSON. Full contents after EJS rendering below:');
         console.error(renderedContents);
         throw e;
     }
 }
 
-function save (options, imposters) {
+function save(options, imposters) {
     const fs = require('fs-extra');
     fs.writeFileSync(options.savefile, JSON.stringify(imposters, null, 2));
 }
 
-module.exports = {
+const defaultParse = {
     load,
     save
 };
+
+export default defaultParse;
+

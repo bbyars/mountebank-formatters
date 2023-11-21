@@ -13,7 +13,9 @@ function save (options, imposters) {
     fs.writeFileSync(options.savefile, JSON.stringify(imposters, null, 2));
 }
 
-module.exports = {
+const noParse = {
     load,
     save
 };
+
+export default noParse;

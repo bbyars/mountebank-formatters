@@ -1,23 +1,12 @@
-'use strict';
+import defaultParse from "./default";
+import noParse from "./noParse";
 
-function formatterFor (options) {
-    if (options.noParse) {
-        return './noParse';
-    }
-    else {
-        return './default';
-    }
+const formatterFor = (options) => options.noParse ? noParse : defaultParse;
+
+export const load = (options) => {
+    return formatterFor(options).load(options);
 }
 
-function load (options) {
-    return require(formatterFor(options)).load(options);
+export const save = (options, imposters) => {
+    return formatterFor(options).save(options, imposters);
 }
-
-function save (options, imposters) {
-    return require(formatterFor(options)).save(options, imposters);
-}
-
-module.exports = {
-    load,
-    save
-};
