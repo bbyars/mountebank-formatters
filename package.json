@@ -1,5 +1,5 @@
 {
-  "name": "mountebank-formatters",
+  "name": "@tangzhen/mountebank-formatters",
   "version": "0.0.2",
   "author": "Brandon Byars <brandon.byars@gmail.com>",
   "description": "The default parsers and formatters for managing mountebank test data",
