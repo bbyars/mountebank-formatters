@@ -1,6 +1,6 @@
 # Changelog
 
-## [Unreleased]
+## [0.0.4] - 2023-11-22
 
 ### Added
 - adding the dts file.

@@ -1,6 +1,6 @@
 {
   "name": "@ztang/mountebank-formatters",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "author": "Brandon Byars <brandon.byars@gmail.com>",
   "description": "The default parsers and formatters for managing mountebank test data",
   "homepage": "http://www.mbtest.org",
