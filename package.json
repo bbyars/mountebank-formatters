@@ -1,5 +1,5 @@
 {
-  "name": "@tangzhen/mountebank-formatters",
+  "name": "@ztang/mountebank-formatters",
   "version": "0.0.2",
   "author": "Brandon Byars <brandon.byars@gmail.com>",
   "description": "The default parsers and formatters for managing mountebank test data",
@@ -8,7 +8,7 @@
   "type": "module",
   "repository": {
     "type": "git",
-    "url": "https://github.com/bbyars/mountebank-formatters.git"
+    "url": "git+https://github.com/bbyars/mountebank-formatters.git"
   },
   "bugs": {
     "url": "https://github.com/bbyars/mountebank-formatters/issues",
@@ -55,6 +55,9 @@
       "eslint --cache"
     ]
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "keywords": [
     "test data",
     "mountebank"
@@ -63,6 +66,7 @@
     "ejs": "3.1.9"
   },
   "devDependencies": {
+    "@release-it/keep-a-changelog": "^5.0.0",
     "@rollup/plugin-node-resolve": "^15.2.3",
     "@rollup/plugin-terser": "^0.4.4",
     "eslint": "8.54.0",
@@ -77,5 +81,8 @@
   },
   "engines": {
     "node": ">=16"
+  },
+  "directories": {
+    "test": "test"
   }
 }
