@@ -1,4 +1,5 @@
 import terser from '@rollup/plugin-terser';
+import { nodeResolve } from '@rollup/plugin-node-resolve';
 
 const outputOptions = {
     exports: 'named',
@@ -31,8 +32,9 @@ const config = {
     ],
     plugins: [
         terser(),
+        nodeResolve(),
     ],
-    external: ['ejs']
+    external: ['ejs'],
 };
 
 export default config;
