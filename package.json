@@ -18,44 +18,32 @@
     "lint": "eslint **/*.js",
     "test": "mocha test/**/*.js",
     "build": "rm -rf dist && NODE_ENV=production rollup -c -m",
-    "release": "release-it"
+    "release": "release-it",
+    "prepare": "husky install"
   },
-  "main": "./src/index.js",
+  "main": "dist/index.cjs",
+  "module": "dist/index.js",
+  "types": "types/index.d.ts",
   "exports": {
     ".": {
-      "import": "./src/index.ts"
+      "type": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
     },
-    "./*": {
+    "./src": {
+      "import": "./src"
+    },
+    "./src/*": {
       "import": "./src/*"
     }
   },
-  "publishConfig": {
-    "main": "dist/index.cjs",
-    "module": "dist/index.js",
-    "types": "types/index.d.ts",
-    "exports": {
-      ".": {
-        "type": "./dist/index.d.ts",
-        "import": "./dist/index.js",
-        "require": "./dist/index.cjs"
-      },
-      "./src": {
-        "import": "./src"
-      },
-      "./src/*": {
-        "import": "./src/*"
-      }
-    },
-    "files": [
-      "dist",
-      "lib",
-      "esm",
-      "readme.md",
-      "tsconfig.json",
-      "types",
-      "src"
-    ]
-  },
+  "files": [
+    "dist",
+    "readme.md",
+    "tsconfig.json",
+    "types",
+    "src"
+  ],
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged"
