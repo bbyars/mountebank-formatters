@@ -5,6 +5,7 @@
   "description": "The default parsers and formatters for managing mountebank test data",
   "homepage": "http://www.mbtest.org",
   "license": "MIT",
+  "type": "module",
   "repository": {
     "type": "git",
     "url": "https://github.com/bbyars/mountebank-formatters.git"

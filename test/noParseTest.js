@@ -1,9 +1,8 @@
-'use strict';
+import assert from 'assert';
+import fs from 'fs-extra';
+import formatter from '../src/noParse.js';
 
-const assert = require('assert'),
-    fs = require('fs-extra'),
-    formatter = require('../src/noParse'),
-    filename = 'noParseTest.json';
+const filename = 'noParseTest.json';
 
 describe('noParse', function () {
     afterEach(function () {

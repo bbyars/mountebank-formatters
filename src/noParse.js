@@ -1,15 +1,13 @@
-'use strict';
+import fs from 'fs-extra';
 
-function load (options) {
-    const fs = require('fs-extra'),
-        json = JSON.parse(fs.readFileSync(options.configfile, 'utf8')),
+function load(options) {
+    const json = JSON.parse(fs.readFileSync(options.configfile, 'utf8')),
         imposters = json.imposters || [json]; // [json] Assume they left off the outer imposters array
 
-    return { imposters };
+    return {imposters};
 }
 
-function save (options, imposters) {
-    const fs = require('fs-extra');
+function save(options, imposters) {
     fs.writeFileSync(options.savefile, JSON.stringify(imposters, null, 2));
 }
 

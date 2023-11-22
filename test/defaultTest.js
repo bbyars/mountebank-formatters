@@ -1,8 +1,6 @@
-'use strict';
-
-const assert = require('assert'),
-    fs = require('fs-extra'),
-    formatter = require('../src/default');
+import assert from 'assert';
+import fs from 'fs-extra';
+import formatter from '../src/default.js';
 
 describe('default', function () {
     describe('#load', function () {

@@ -7,6 +7,10 @@
  mountebank accepted them), and in part, to show the pattern for extensibility.
  */
 
+import fs from 'fs-extra';
+import ejs from 'ejs';
+import path from 'path';
+
 function makeStringify(rootFile) {
     // The filename parameter is deprecated (mountebank used to force users to pass
     // the literal variable name, an awful hack whose intent is long forgotten)
@@ -15,10 +19,7 @@ function makeStringify(rootFile) {
         if (!includeFile) {
             includeFile = filename;
         }
-        const fs = require('fs-extra'),
-            path = require('path'),
-            ejs = require('ejs'),
-            resolvedPath = path.join(path.dirname(rootFile), includeFile),
+        const resolvedPath = path.join(path.dirname(rootFile), includeFile),
             contents = fs.readFileSync(resolvedPath, 'utf8'),
             rendered = ejs.render(contents, {
                 data: data,
@@ -36,9 +37,7 @@ function makeStringify(rootFile) {
 }
 
 function load(options) {
-    const fs = require('fs-extra'),
-        ejs = require('ejs'),
-        configContents = fs.readFileSync(options.configfile, 'utf8'),
+    const configContents = fs.readFileSync(options.configfile, 'utf8'),
         renderedContents = options.noParse ? configContents : ejs.render(configContents, {
             filename: options.configfile,
             stringify: makeStringify(options.configfile),
@@ -58,7 +57,6 @@ function load(options) {
 }
 
 function save(options, imposters) {
-    const fs = require('fs-extra');
     fs.writeFileSync(options.savefile, JSON.stringify(imposters, null, 2));
 }
 
