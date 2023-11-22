@@ -1,12 +1,12 @@
 import assert from 'assert';
-import fs from 'fs-extra';
+import { unlinkSync, writeFileSync } from 'node:fs';
 import formatter from '../src/noParse.js';
 
 const filename = 'noParseTest.json';
 
 describe('noParse', function () {
     afterEach(function () {
-        fs.unlinkSync(filename);
+        unlinkSync(filename);
     });
 
     describe('#load', function () {
@@ -18,7 +18,7 @@ describe('noParse', function () {
                     name: '<% include template.ejs %>'
                 }]
             };
-            fs.writeFileSync(filename, JSON.stringify(config));
+            writeFileSync(filename, JSON.stringify(config));
 
             assert.deepStrictEqual(formatter.load({ configfile: filename }), config);
         });
@@ -29,7 +29,7 @@ describe('noParse', function () {
                 protocol: 'test',
                 name: '<% include template.ejs %>'
             };
-            fs.writeFileSync(filename, JSON.stringify(config));
+            writeFileSync(filename, JSON.stringify(config));
 
             assert.deepStrictEqual(formatter.load({ configfile: filename }), { imposters: [config] });
         });

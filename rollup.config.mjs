@@ -31,7 +31,8 @@ const config = {
     ],
     plugins: [
         terser(),
-    ]
+    ],
+    external: ['ejs']
 };
 
 export default config;

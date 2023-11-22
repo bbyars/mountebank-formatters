@@ -1,4 +1,4 @@
-'use strict';
+
 
 /**
  The original implementation of --configfile and mb save. It's separated from the
@@ -7,20 +7,20 @@
  mountebank accepted them), and in part, to show the pattern for extensibility.
  */
 
-import fs from 'fs-extra';
+import { readFileSync, writeFileSync } from 'node:fs';
 import ejs from 'ejs';
-import path from 'path';
+import path from 'node:path';
 
-function makeStringify(rootFile) {
+function makeStringify (rootFile) {
     // The filename parameter is deprecated (mountebank used to force users to pass
     // the literal variable name, an awful hack whose intent is long forgotten)
     // This maintains that signature for backwards compatibility
-    function stringify(filename, includeFile, data) {
+    function stringify (filename, includeFile, data) {
         if (!includeFile) {
             includeFile = filename;
         }
         const resolvedPath = path.join(path.dirname(rootFile), includeFile),
-            contents = fs.readFileSync(resolvedPath, 'utf8'),
+            contents = readFileSync(resolvedPath, 'utf8'),
             rendered = ejs.render(contents, {
                 data: data,
                 filename: rootFile,
@@ -36,8 +36,8 @@ function makeStringify(rootFile) {
     return stringify;
 }
 
-function load(options) {
-    const configContents = fs.readFileSync(options.configfile, 'utf8'),
+function load (options) {
+    const configContents = readFileSync(options.configfile, 'utf8'),
         renderedContents = options.noParse ? configContents : ejs.render(configContents, {
             filename: options.configfile,
             stringify: makeStringify(options.configfile),
@@ -48,16 +48,17 @@ function load(options) {
         const json = JSON.parse(renderedContents),
             imposters = json.imposters || [json]; // [json] Assume they left off the outer imposters array
 
-        return {imposters};
-    } catch (e) {
+        return { imposters };
+    }
+    catch (e) {
         console.error('Unable to parse configfile as JSON. Full contents after EJS rendering below:');
         console.error(renderedContents);
         throw e;
     }
 }
 
-function save(options, imposters) {
-    fs.writeFileSync(options.savefile, JSON.stringify(imposters, null, 2));
+function save (options, imposters) {
+    writeFileSync(options.savefile, JSON.stringify(imposters, null, 2));
 }
 
 const defaultParse = {

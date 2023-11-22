@@ -1,5 +1,5 @@
 import assert from 'assert';
-import fs from 'fs-extra';
+import { writeFileSync, unlinkSync } from 'node:fs';
 import formatter from '../src/default.js';
 
 describe('default', function () {
@@ -12,10 +12,10 @@ describe('default', function () {
                     name: 'name'
                 }]
             };
-            fs.writeFileSync('defaultTest.json', JSON.stringify(config));
+            writeFileSync('defaultTest.json', JSON.stringify(config));
 
             assert.deepStrictEqual(formatter.load({ configfile: 'defaultTest.json' }), config);
-            fs.unlinkSync('defaultTest.json');
+            unlinkSync('defaultTest.json');
         });
 
         it('should add imposters array if it is missing', function () {
@@ -24,10 +24,10 @@ describe('default', function () {
                 protocol: 'test',
                 name: 'name'
             };
-            fs.writeFileSync('defaultTest.json', JSON.stringify(config));
+            writeFileSync('defaultTest.json', JSON.stringify(config));
 
             assert.deepStrictEqual(formatter.load({ configfile: 'defaultTest.json' }), { imposters: [config] });
-            fs.unlinkSync('defaultTest.json');
+            unlinkSync('defaultTest.json');
         });
 
         it('should interpret EJS code blocks', function () {
@@ -108,7 +108,7 @@ describe('default', function () {
             formatter.save({ savefile: 'defaultTest.json' }, config);
 
             assert.deepStrictEqual(formatter.load({ configfile: 'defaultTest.json' }), config);
-            fs.unlinkSync('defaultTest.json');
+            unlinkSync('defaultTest.json');
         });
     });
 });
