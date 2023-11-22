@@ -1,4 +1,4 @@
-'use strict';
+
 
 /**
  The original implementation of --configfile and mb save. It's separated from the
@@ -6,6 +6,10 @@
  breaking changes that would have introduced backwards compatibility problems if
  mountebank accepted them), and in part, to show the pattern for extensibility.
  */
+
+import { readFileSync, writeFileSync } from 'node:fs';
+import ejs from 'ejs';
+import path from 'node:path';
 
 function makeStringify (rootFile) {
     // The filename parameter is deprecated (mountebank used to force users to pass
@@ -15,11 +19,8 @@ function makeStringify (rootFile) {
         if (!includeFile) {
             includeFile = filename;
         }
-        const fs = require('fs-extra'),
-            path = require('path'),
-            ejs = require('ejs'),
-            resolvedPath = path.join(path.dirname(rootFile), includeFile),
-            contents = fs.readFileSync(resolvedPath, 'utf8'),
+        const resolvedPath = path.join(path.dirname(rootFile), includeFile),
+            contents = readFileSync(resolvedPath, 'utf8'),
             rendered = ejs.render(contents, {
                 data: data,
                 filename: rootFile,
@@ -36,9 +37,7 @@ function makeStringify (rootFile) {
 }
 
 function load (options) {
-    const fs = require('fs-extra'),
-        ejs = require('ejs'),
-        configContents = fs.readFileSync(options.configfile, 'utf8'),
+    const configContents = readFileSync(options.configfile, 'utf8'),
         renderedContents = options.noParse ? configContents : ejs.render(configContents, {
             filename: options.configfile,
             stringify: makeStringify(options.configfile),
@@ -59,11 +58,13 @@ function load (options) {
 }
 
 function save (options, imposters) {
-    const fs = require('fs-extra');
-    fs.writeFileSync(options.savefile, JSON.stringify(imposters, null, 2));
+    writeFileSync(options.savefile, JSON.stringify(imposters, null, 2));
 }
 
-module.exports = {
+const defaultParse = {
     load,
     save
 };
+
+export default defaultParse;
+

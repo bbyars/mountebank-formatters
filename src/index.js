@@ -1,23 +1,33 @@
-'use strict';
+import defaultParse from './default';
+import noParse from './noParse';
 
-function formatterFor (options) {
-    if (options.noParse) {
-        return './noParse';
-    }
-    else {
-        return './default';
-    }
-}
+const formatterFor = options => (options.noParse ? noParse : defaultParse);
 
-function load (options) {
-    return require(formatterFor(options)).load(options);
-}
+/**
+ * @typedef FormatterOptions
+ * @property {boolean} noParse no parse or use default parser
+ * @property {string} configfile config filename
+ * @property {string} savefile save filename
+ */
 
-function save (options, imposters) {
-    return require(formatterFor(options)).save(options, imposters);
-}
-
-module.exports = {
-    load,
-    save
+/**
+ * Load the imposters from a file.
+ * @param {FormatterOptions} options - formatter options.
+ */
+const load = options => {
+    return formatterFor(options).load(options);
 };
+
+/**
+ * Save the imposters to a file.
+ * @param {FormatterOptions} options - formatter options.
+ * @param {object} imposters - imposters to be saved.
+ */
+const save = (options, imposters) => {
+    return formatterFor(options).save(options, imposters);
+};
+
+export default {
+    load,
+    save,
+}

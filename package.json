@@ -5,33 +5,89 @@
   "description": "The default parsers and formatters for managing mountebank test data",
   "homepage": "http://www.mbtest.org",
   "license": "MIT",
+  "type": "module",
   "repository": {
     "type": "git",
-    "url": "https://github.com/bbyars/mountebank-formatters.git"
+    "url": "git+https://github.com/bbyars/mountebank-formatters.git"
   },
   "bugs": {
     "url": "https://github.com/bbyars/mountebank-formatters/issues",
     "email": "brandon.byars@gmail.com"
   },
-  "main": "./src/index.js",
   "scripts": {
-    "test": "node node_modules/.bin/eslint **/*.js && node node_modules/.bin/_mocha test/**/*.js"
+    "lint": "eslint **/*.js",
+    "test": "mocha test/**/*.js",
+    "build": "rm -rf types && tsc --build tsconfig.json",
+    "package": "NODE_ENV=production npm run build && rollup -c",
+    "prepackage": "rm -rf dist",
+    "release": "release-it",
+    "prepare": "husky install",
+    "doc": "jsdoc src -r -c .jsdoc -d docs"
+  },
+  "main": "dist/index.cjs",
+  "module": "dist/index.js",
+  "types": "types/index.d.ts",
+  "exports": {
+    ".": {
+      "type": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./src": {
+      "import": "./src"
+    },
+    "./src/*": {
+      "import": "./src/*"
+    }
+  },
+  "files": [
+    "dist",
+    "readme.md",
+    "tsconfig.json",
+    "types",
+    "src"
+  ],
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "prettier --ignore-path ./.prettierignore --write ",
+      "eslint --cache"
+    ]
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "keywords": [
     "test data",
     "mountebank"
   ],
   "dependencies": {
-    "ejs": "2.7.4",
-    "fs-extra": "9.0.1"
+    "ejs": "3.1.9"
   },
   "devDependencies": {
-    "eslint": "7.16.0",
-    "mocha": "8.2.1",
-    "snyk": "1.437.3"
+    "@release-it/keep-a-changelog": "^5.0.0",
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "@rollup/plugin-terser": "^0.4.4",
+    "eslint": "8.54.0",
+    "husky": "^8.0.3",
+    "jsdoc": "^4.0.2",
+    "lint-staged": "^15.1.0",
+    "mocha": "10.2.0",
+    "prettier": "^3.1.0",
+    "release-it": "^17.0.0",
+    "rollup": "^4.5.0",
+    "rollup-plugin-dts": "^6.1.0",
+    "snyk": "1.1248.0",
+    "typescript": "^5.3.2"
   },
-  "files": ["src", "README.md", "package*.json"],
   "engines": {
-    "node": ">=10"
+    "node": ">=16"
+  },
+  "directories": {
+    "test": "test"
   }
 }
