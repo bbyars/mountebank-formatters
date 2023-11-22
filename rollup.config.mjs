@@ -16,25 +16,39 @@ const outputOptions = {
  */`,
 };
 
+const dir = 'dist'
+
 const config = {
     input: 'src/index.js',
     output: [
         {
-            dir: 'dist/esm',
-            format: 'esm',
-            ...outputOptions,
+            file: `${dir}/index.cjs`,
+            format: 'cjs',
+            sourcemap: true,
         },
         {
-            dir: 'dist/cjs',
+            file: `${dir}/index.min.cjs`,
             format: 'cjs',
-            ...outputOptions,
+            sourcemap: true,
+            plugins: [terser()],
+        },
+        {
+            file: `${dir}/index.js`,
+            format: 'esm',
+            sourcemap: true,
+        },
+        {
+            file: `${dir}/index.min.js`,
+            format: 'esm',
+            sourcemap: true,
+            plugins: [terser()],
         },
     ],
     plugins: [
-        terser(),
         nodeResolve(),
     ],
     external: ['ejs'],
+    treeshake: true,
 };
 
 export default config;

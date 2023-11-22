@@ -14,11 +14,58 @@
     "url": "https://github.com/bbyars/mountebank-formatters/issues",
     "email": "brandon.byars@gmail.com"
   },
-  "main": "dist/index.js",
   "scripts": {
     "lint": "eslint **/*.js",
     "test": "mocha test/**/*.js",
-    "build": "rm -rf dist && NODE_ENV=production rollup -c -m"
+    "build": "rm -rf dist && NODE_ENV=production rollup -c -m",
+    "release": "release-it"
+  },
+  "main": "./src/index.js",
+  "exports": {
+    ".": {
+      "import": "./src/index.ts"
+    },
+    "./*": {
+      "import": "./src/*"
+    }
+  },
+  "publishConfig": {
+    "main": "dist/index.cjs",
+    "module": "dist/index.js",
+    "types": "types/index.d.ts",
+    "exports": {
+      ".": {
+        "type": "./dist/index.d.ts",
+        "import": "./dist/index.js",
+        "require": "./dist/index.cjs"
+      },
+      "./src": {
+        "import": "./src"
+      },
+      "./src/*": {
+        "import": "./src/*"
+      }
+    },
+    "files": [
+      "dist",
+      "lib",
+      "esm",
+      "readme.md",
+      "tsconfig.json",
+      "types",
+      "src"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "prettier --ignore-path ./.prettierignore --write ",
+      "eslint --cache"
+    ]
   },
   "keywords": [
     "test data",
@@ -31,16 +78,15 @@
     "@rollup/plugin-node-resolve": "^15.2.3",
     "@rollup/plugin-terser": "^0.4.4",
     "eslint": "8.54.0",
+    "husky": "^8.0.3",
     "jsdoc": "^4.0.2",
+    "lint-staged": "^15.1.0",
     "mocha": "10.2.0",
+    "prettier": "^3.1.0",
+    "release-it": "^17.0.0",
     "rollup": "^4.5.0",
     "snyk": "1.1248.0"
   },
-  "files": [
-    "dist",
-    "README.md",
-    "package*.json"
-  ],
   "engines": {
     "node": ">=16"
   }
