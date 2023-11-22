@@ -1,9 +1,11 @@
 # Changelog
 
-## [0.0.2] - 2020-12-30
-
 ## [Unreleased]
 
 ### Added
+- adding the dts file.
 
-- Keep-a-changelog plugin added.
+### Changed
+- change use rollup to build.
+
+## [0.0.2] - 2020-12-30

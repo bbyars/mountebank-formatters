@@ -17,9 +17,12 @@
   "scripts": {
     "lint": "eslint **/*.js",
     "test": "mocha test/**/*.js",
-    "build": "rm -rf dist && NODE_ENV=production rollup -c -m",
+    "build": "rm -rf types && tsc --build tsconfig.json",
+    "package": "NODE_ENV=production npm run build && rollup -c",
+    "prepackage": "rm -rf dist",
     "release": "release-it",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "doc": "jsdoc src -r -c .jsdoc -d docs"
   },
   "main": "dist/index.cjs",
   "module": "dist/index.js",
@@ -77,7 +80,9 @@
     "prettier": "^3.1.0",
     "release-it": "^17.0.0",
     "rollup": "^4.5.0",
-    "snyk": "1.1248.0"
+    "rollup-plugin-dts": "^6.1.0",
+    "snyk": "1.1248.0",
+    "typescript": "^5.3.2"
   },
   "engines": {
     "node": ">=16"

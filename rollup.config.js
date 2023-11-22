@@ -1,4 +1,5 @@
 import terser from '@rollup/plugin-terser';
+import dts from 'rollup-plugin-dts';
 import { nodeResolve } from '@rollup/plugin-node-resolve';
 
 const outputOptions = {
@@ -18,7 +19,7 @@ const outputOptions = {
 
 const dir = 'dist'
 
-const config = {
+const config = [{
     input: 'src/index.js',
     output: [
         {
@@ -49,6 +50,10 @@ const config = {
     ],
     external: ['ejs'],
     treeshake: true,
-};
+},{
+    input: './types/index.d.ts',
+    output: [{ file: 'dist/index.d.ts', format: 'es' }],
+    plugins: [dts()],
+},];
 
 export default config;
